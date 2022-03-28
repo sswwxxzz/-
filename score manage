@@ -1,0 +1,366 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>//system("cls");
+#include <conio.h>
+//结构体
+typedef struct student
+{
+	int id;
+
+	char name[8];
+
+	char gender[6];
+
+	int mathScore;//数学成绩 
+	int englishScore;//英语成绩 
+	int programScore;//程序设计成绩 
+
+	int totalPoints;//总分 
+
+	char pass[4];//及格 
+
+} stu;
+
+
+//函数声明
+void menu();
+stu add(int j);
+void show(stu a[1000]);
+void search(stu b[1000]);
+void modify(stu c[1000]);
+void cancle(stu d[1000]);
+
+int main()
+{
+	stu people[1000] = { 0 };
+
+	for (int i = 1; i < 1000; i++)
+	{
+		int number;
+		menu();
+		scanf("%d",&number);
+
+		switch (number)
+		{
+		case 1: search(people); break;
+
+		case 2: {
+			int k;
+			printf("请输入所要录入的人数：");
+			scanf("%d", &k);
+
+			if (i == 1)//第一次录入
+			{
+				for (int x = 0; x < k; x++)
+					people[x] = add(x);
+			}
+			else if (i >= 2)//第二次录入 
+			{
+				int m = 0;
+				for (int u = 0; u < 1000; u++)
+				{
+					if (people[u].id == 0)
+						m = u;
+				}
+				if (m != 0)
+				{
+					for (int x = 0; x < k; x++)
+						people[m + x] = add(x); 
+						
+				}
+
+			}
+
+
+			system("cls");
+
+		}; break;
+
+			case 3: modify(people);break;
+
+			case 4: cancle(people);break;
+
+		case 5: show(people); break;
+
+		case 0: {
+			printf("                                    感谢使用                                      ");
+			goto loop;
+		}; break;
+
+		}
+	}
+loop:;
+
+
+	return 0;
+}
+
+
+void menu()
+{
+	printf("________________________________________________________________________________\n");
+	printf("\n\n");
+	printf("**                              学生信息菜单系统                              **\n");
+	printf("\n");
+	printf("\n");
+	printf("                               本系统支持以下功能                                 \n");
+	printf("                                 1.查询学生信息                                   \n");
+	printf("                                 2.添加学生信息                                   \n");
+	printf("                                 3.修改学生信息                                   \n");
+	printf("                                 4.删除学生信息                                   \n");
+	printf("                                 5.输出学生信息                                   \n");
+	printf("                                     0.结束                                       \n");
+	printf("\n");
+	printf("\n");
+	printf("                             请输入所需要功能的序号:");
+}
+
+stu add(int j)
+{
+	system("cls");//清屏 
+
+	stu a = { 0 };
+	printf("请输入第%d人的id(大于零的数字):", j + 1);
+	scanf("%d", &a.id);
+	printf("\n请输入第%d人的姓名(中文):", j + 1);
+	scanf("%s", &a.name);
+	printf("\n请输入第%d人的年级(中文):", j + 1);
+	scanf("%s", &a.gender);
+	printf("\n请输入第%d人的高数成绩(数字):", j + 1);
+	scanf("%d", &a.mathScore);
+	printf("请输入第%d人的英语成绩(数字):", j + 1);
+	scanf("%d", &a.englishScore);
+	printf("请输入第%d人的编程成绩(数字):", j + 1);
+	scanf("%d", &a.programScore);
+
+	a.totalPoints = a.englishScore + a.mathScore + a.programScore;//总分 
+
+	int p=0;
+	if (a.englishScore >= 60)
+		++p;
+	if (a.mathScore >= 60)
+		++p;
+	if (a.programScore >= 60)
+		++p;
+	if (p == 3)
+		strcpy(a.pass, "过");
+	else
+		strcpy(a.pass, "未过");
+
+	return a;
+}
+
+void show(stu a[1000])
+{
+	system("cls");
+
+	printf("id \t 姓名 \t 年级 \t 高数成绩 \t 英语成绩 \t 编程成绩 \t  总成绩 \t 是否通过\n");
+	for (int i = 0; i < 1000; i++)
+	{
+		if (a[i].id != 0)
+		{
+			printf(" %d", a[i].id);
+			printf("    \t%s", a[i].name);
+			printf("\t%s", a[i].gender);
+			printf("    \t%d", a[i].mathScore);
+			printf("   \t\t%d", a[i].englishScore);
+			printf(" \t\t%d", a[i].programScore);
+			printf(" \t\t%d", a[i].totalPoints);
+			printf(" \t\t%s\n", a[i].pass);
+		}
+	}
+	printf("\n\n\n\n按回车键返回菜单");
+	char c = getch();
+	system("cls");
+}
+
+void search(stu b[1000])
+{
+	system("cls");
+	printf("请输入所需要的功能:\n");
+	printf("1.按id搜索\n");
+	printf("2.按姓名搜索\n");
+	printf("3.按不及格的搜索\n");
+	printf("请输入需要的功能:");
+	int c;
+	scanf("%d", &c);
+	switch (c)
+	{
+	case 1: {
+		int hao;
+		printf("请输入所需搜寻的id:");
+		scanf("%d", &hao);
+		for (int j = 0; j < 1000; j++)
+		{
+			if (b[j].id == hao) {
+				printf("id \t 姓名 \t 年级 \t 高数成绩 \t 英语成绩 \t 编程成绩 \t 总成绩 \t 是否通过\n");
+				printf(" %d", b[j].id);
+				printf("    \t%s", b[j].name);
+				printf("\t%s", b[j].gender);
+				printf("    \t%d", b[j].mathScore);
+				printf("   \t\t%d", b[j].englishScore);
+				printf(" \t\t%d", b[j].programScore);
+				printf(" \t\t%d", b[j].totalPoints);
+				printf(" \t\t%s\n", b[j].pass);
+			}
+
+		}
+		printf("\n\n按回车返回菜单");
+		char c = getch();
+	}; break;
+
+
+	case 2: {
+		char ming[8];
+		printf("请输入所要搜寻的姓名 :");
+		scanf("%s", ming);
+		for (int j = 0; j < 1000; j++)
+		{
+			if (strcmp(b[j].name, ming) == 0) {
+				printf("id \t 姓名 \t 年级 \t 高数成绩 \t 英语成绩 \t 编程成绩 \t 总成绩 \t 是否通过\n");
+				printf(" %d", b[j].id);
+				printf("    \t%s", b[j].name);
+				printf("\t%s", b[j].gender);
+				printf("    \t%d", b[j].mathScore);
+				printf("   \t\t%d", b[j].englishScore);
+				printf(" \t\t%d", b[j].programScore);
+				printf(" \t\t%d", b[j].totalPoints);
+				printf(" \t\t%s\n", b[j].pass);
+			}
+
+		}
+		printf("\n\n按回车返回菜单");
+		char c = getch();
+
+
+	}; break;
+
+
+	case 3: {
+		char guo[4];
+		strcpy(guo, "未过");
+		for (int j = 0; j < 1000; j++)
+		{
+			if (strcmp(b[j].pass, guo) == 0) {
+				printf("id \t 姓名 \t 年级 \t 高数成绩 \t 英语成绩 \t 编程成绩 \t 总成绩 \t 是否通过\n");
+				printf(" %d", b[j].id);
+				printf("    \t%s", b[j].name);
+				printf("\t%s", b[j].gender);
+				printf("    \t%d", b[j].mathScore);
+				printf("   \t\t%d", b[j].englishScore);
+				printf(" \t\t%d", b[j].programScore);
+				printf(" \t\t%d", b[j].totalPoints);
+				printf(" \t\t%s\n", b[j].pass);
+			}
+
+		}
+		printf("\n\n按回车返回菜单");
+		char c = getch();
+
+	}; break;
+
+	}
+
+	system("cls");
+}
+
+void modify(stu c[1000])
+{
+	system("cls");
+	
+	printf("请输入所要修改人的id：");
+	int hao;
+	scanf("%d",&hao);
+	for(int i=0;i<1000;i++)
+	{
+		if(c[i].id==hao)
+		{
+			
+			int u=0;
+			printf("1.改id\n");
+			printf("2.改姓名\n");
+			printf("3.改年级\n");
+			printf("4.改高数成绩\n");
+			printf("5.改英语成绩\n");
+			printf("6.改编程成绩\n");
+			printf("请输入需要功能的编号:\n");
+			scanf("%d",&u);
+			
+			system("cls");
+			
+			switch(u)
+			{
+				case 1:{
+				printf("\n请输入要改成的数据：");
+				scanf("%d",&c[i].id);
+					
+					
+				};break;
+				case 2:{
+				printf("\n请输入要改成的数据：");
+				scanf("%s",&c[i].name);	
+					
+				};break;
+				case 3:{
+				printf("\n请输入要改成的数据：");
+				scanf("%s",&c[i].gender);	
+					
+				};break;
+				case 4:{
+				printf("\n请输入要改成的数据：");
+				scanf("%d",&c[i].mathScore);	
+					
+				};break;
+				case 5:{
+				printf("\n请输入要改成的数据：");
+				scanf("%d",&c[i].englishScore);	
+					
+				};break;
+				case 6:{
+				printf("\n请输入要改成的数据：");
+				scanf("%d",&c[i].programScore);		
+				};break;
+			}
+			c[i].totalPoints = c[i].englishScore + c[i].mathScore + c[i].programScore;
+			int p=0;
+			if (c[i].englishScore >= 60)
+				++p;
+			if (c[i].mathScore >= 60)
+				++p;
+			if (c[i].programScore >= 60)
+				++p;
+			if (p == 3)
+				strcpy(c[i].pass, "过");
+			else
+				strcpy(c[i].pass, "未过");
+			
+			
+		}
+	}
+	
+	system("cls");
+}
+
+void cancle(stu d[1000])
+{
+	system("cls");
+	printf("请输入所要删除的人的id:");
+	int xiao;
+	scanf("%d",&xiao);
+	for(int i=0;i<1000;i++)
+	{
+		if(d[i].id==xiao)
+		{
+			d[i].id=0;
+			strcpy(d[i].name,"");
+			strcpy(d[i].gender,"");
+			d[i].mathScore=0;
+			d[i].englishScore=0;
+			d[i].programScore=0;
+			d[i].totalPoints=0;
+			strcpy(d[i].pass,"");
+		}
+	}
+	
+	system("cls");
+}
